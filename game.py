@@ -12,9 +12,10 @@ pygame.display.flip()
 pygame.display.update()
 running = True
 
+#sorry for lack or comments and bad coding.
 # image, the main function for generating and saving images. 
-def image(c01, c02, c03, size, curve, auto, tick, autosave):
-    #screen = pygame.display.set_mode(res, pygame.FULLSCREEN)   
+def image(c01, c02, c03, size, curve, auto, tick, autosave, merge):
+    #screen = pygame.display.set_mode(res, pygame.FULLSCREEN)   #issues with fullscreen. 
     res = width, height = 2000, 2000
     screen = pygame.display.set_mode((res))
     if not curve: curve = 0
@@ -53,7 +54,7 @@ def image(c01, c02, c03, size, curve, auto, tick, autosave):
     finalnum = str(size) + " " + str(res[0]) + " " + str(res[1]) + " "
     switch = 0
     for p in range(int(width*height/size)):
-        if switch % 2:
+        if (switch % 2 and merge in ("y", "yes", "Y")) or merge not in ("y", "yes", "Y"):
             if int(curve) > 0:
                 red = [c0, c1, c2]
             else:
@@ -69,7 +70,7 @@ def image(c01, c02, c03, size, curve, auto, tick, autosave):
                 if c2 >255:
                     c2 = randint(1, int(curve))
             switch += 1
-        else:
+        elif merge in ("y", "yes", "Y"):
             if int(curve) > 0:
                 red = [d0, d1, d2]
             else:
@@ -106,7 +107,7 @@ def image(c01, c02, c03, size, curve, auto, tick, autosave):
             pygame.image.save(screen, str(filename)+".jpeg")
         if input("animate?") == 'y': animate(finalnum)
     else: 
-        if autosave:
+        if autosave in ("y", "yes", "Y"):
             filename = str(size)+"A"+str(c00)+str(c10)+str(c20)+"B"+str(randint(0,55))
             file1 = str(filename)+".txt"
             file2 =  open(file1, "w")
@@ -116,10 +117,10 @@ def image(c01, c02, c03, size, curve, auto, tick, autosave):
             pygame.image.save(screen, str(filename)+".jpeg")
         print(str(size)+"A"+str(c00)+'.'+str(c10)+'.'+str(c20))
         time.sleep(2.5)
-        image("","","","",5, True, 1)
+        image("","","","",5, True, 1, autosave, merge)
 
 
-# animate still needs lots of work. It works as intended but dosn't look that interesting. 
+# animate still needs lots of work. It works as intended but dosn't look that interesting.
 def animate(txt_file):
     if not txt_file: 
         file = (input("enter text file name: ")+".txt")
@@ -223,19 +224,20 @@ def draw(file, screen):
 while True:
     choice = input("random image(1) load image(2), animate image(3), auto-play(4) or custom(5)")
     if choice == "1":
-        image("","","","",0, False, 0)
+        image("","","","",0, False, 0, False)
     elif choice == "2":
         draw("")
     elif choice == "3":
         animate('')
     elif choice == "4":
         res = width, height = 900, 900
-        image("","","","",0, True, 0, input("auto save? y/n"))
+        image("","","","",0, True, 0, input("auto save? y/n"), input("image merge? y/n"))
     elif choice == "5":
-        image(input("Seed A: "), input("Seed B: "), input("Seed C: "), input("Size?: "), input("Curve ratio: "), False, 0)
+        image(input("Seed A: "), input("Seed B: "), input("Seed C: "), input("Size?: "), input("Curve ratio: "), False, 0, 'n', 'n')
 
 
 
 
 
 ##Quick project :)
+#manipulator infected mushroom
